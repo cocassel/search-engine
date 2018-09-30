@@ -18,8 +18,6 @@ public class invertedIndexEngine {
 		
 		System.out.println("Please enter the path to the latimes.gz file");
 		String filePath=scanner.next();
-		//filePath="/Users/Celeste/Documents/2018/3A/MSCI541/latimes.gz";
-		//filePath="/Users/Celeste/Documents/2018/3A/MSCI541/latimesSampleDocs.gz";
 		File laTimes=new File(filePath);
 		while(!laTimes.exists()){
 			System.out.println("The latimse.gz file is not in this path. Please enter a valid path.");
@@ -32,8 +30,6 @@ public class invertedIndexEngine {
 		
 		System.out.println("Where would you like the documents and metadata to be stored? Please enter a path to a new directory.");
 		String pathToStoreDocs=scanner.next();
-		//pathToStoreDocs="/Users/Celeste/Documents/2018/3A/MSCI541/MSCI541-Homework/LAtimesDocs";
-		//pathToStoreDocs="/Users/Celeste/Documents/2018/3A/MSCI541/MSCI541-Homework/LAtimesSampleDocs";
 		if(pathToStoreDocs.isEmpty()){
 			System.out.println("That is not a valid file path. Please enter a valid file path. ");
 		}
@@ -45,7 +41,7 @@ public class invertedIndexEngine {
 		else{
 			gzip(filePath, pathToStoreDocs);
 		}
-		
+		scanner.close();
 	}
 	
 	public static void gzip(String filePath, String pathToStoreDocs) throws FileNotFoundException, IOException{
@@ -66,8 +62,6 @@ public class invertedIndexEngine {
 		String currentHeadline="\n";
 		int currentDocLength=-1;
 		ArrayList<String> docLines = new ArrayList<String>();
-		
-		
 		
 		while((currentLine=reader.readLine())!=null){
 			
@@ -169,9 +163,9 @@ public class invertedIndexEngine {
 			   indexWriter.println(invIndex.get(termId));
 		}	
 		indexWriter.close();
-		
-		
+		reader.close();
 	}
+	
 	public static ArrayList<String> tokenizeDoc(ArrayList<String> docLines){ //function to tokenize a document. returns doc's token list
 		ArrayList<String> docTokens = new ArrayList<String>();
 		int i=0;

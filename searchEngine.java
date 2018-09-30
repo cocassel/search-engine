@@ -1,13 +1,12 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class HW5 {
+public class searchEngine {
 
 	public static void main(String[] args) throws IOException {
 		
@@ -22,24 +21,25 @@ public class HW5 {
 		HashMap<String, Integer> lexicon1 = readInLexicon(pathToIndex);	//call function to read in lexicon
 		HashMap<Integer, metadata> metadata =readInMetadataDoc(pathToIndex); //call function to read in metadata
 		System.out.println("Collection information has been loaded \n");
-		
-		
-		
+			
 		//fence-post starts here
 		System.out.println("Please enter your query");
 		String query=scanner.nextLine();
+		String response;
 		
 		ArrayList<Integer> top10 = getResults(pathToIndex, invIndex, lexicon1, metadata, query); //calls function that performs search for given query file and prints results to a text file
 		if(!top10.isEmpty()){ //if there is at least one result
 			System.out.println("If you woud like to view one of these documents, enter the number of the document you would like to view. "
 					+ "\nIf you would like to quit, enter \"Q\"."
 					+ "If you would like to enter a new query, please enter \"N\"");
+			response=scanner.nextLine();
 		}
 		else{ //if there are no results returned for the query.
 			System.out.println("No documents were retrieved for this query. If you would like to enter a new query, enter \"N\". "
 			+ "If you would like to quit, enter \"Q\"");
+			response=scanner.nextLine();
 		}
-		String response=scanner.nextLine();
+		
 		//end of fence-post
 		
 		while(!(response.equals("Q"))){ // while the users entry does not equal "Q"
@@ -86,7 +86,7 @@ public class HW5 {
 			
 		}
 		System.out.println("Thank you for using this search engine! Have a good day!");
-		
+		scanner.close();
 	}
 	
 	public static ArrayList<Integer> getResults(String filePath, HashMap<Integer, ArrayList<Integer>> invIndex, HashMap<String, Integer> lexicon1, HashMap<Integer, metadata> metadata, String query) throws IOException{
@@ -181,7 +181,6 @@ public class HW5 {
 			top10.add(docID); //adds docID to arraylist
 			String docno = metadata.get(docID).getDocno(); //retrieves the docno for the given document ID
 			int rank=k +1;
-			double score = resultSet.get(k).getBM25score();
 			
 			ArrayList<String> rawDoc= getDocFromId(filePath,metadata,docID);//calls function to read in raw document
 			
@@ -246,6 +245,7 @@ public class HW5 {
 			rawDoc.add(currentLine);
         }  
 		lineReader.close(); 
+		scanner.close();
 		return rawDoc;
 	}
 	

@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
@@ -48,6 +47,7 @@ public class readDoc {
 				System.out.println("Please enter either \"docno\" or \"id\" to specify which would you would like use to retrieve a document.");
 			}
 		}	
+		scanner.close();
 	}
 	
 	public static void getFromDocno(String filePath, HashMap<Integer, metadata> IDtoMetadata, HashMap<String, Integer> docnoToInternalID) throws IOException{
@@ -67,7 +67,8 @@ public class readDoc {
 		while((currentLine = lineReader.readLine()) != null) {
 			System.out.println(currentLine);
         }  
-		lineReader.close(); 
+		lineReader.close();
+		scanner.close();
 	}
 	
 	public static void getFromId(String filePath, HashMap<Integer, metadata> IDtoMetadata) throws IOException{
@@ -87,11 +88,12 @@ public class readDoc {
 			System.out.println(currentLine);
         }  
 		lineReader.close(); 
+		scanner.close();
 	}
 	
 	public static HashMap<Integer, metadata> readInMetadataDoc(String pathToDoc) throws IOException{ //recreates hashmap of internal IDs to metadata
 		
-		HashMap<Integer, metadata> IDtoMetadata = new HashMap(); //key is internal doc ID and value is metadata
+		HashMap<Integer, metadata> IDtoMetadata = new HashMap<Integer, metadata>(); //key is internal doc ID and value is metadata
         
 		FileReader docReader = new FileReader(pathToDoc + "internalIDtoMetadata.txt");
 		BufferedReader lineReader = new BufferedReader(docReader);
@@ -143,7 +145,7 @@ public class readDoc {
 	
 	public static HashMap<String, Integer> readInDocnoDoc(String pathToDoc) throws IOException{ //recreates hashmap of 
 		
-		HashMap<String, Integer> docnoToInternalID = new HashMap(); //key is docno and value is internal doc ID
+		HashMap<String, Integer> docnoToInternalID = new HashMap<String, Integer>(); //key is docno and value is internal doc ID
 		
 		FileReader docReader = new FileReader(pathToDoc + "docnoToInternalID.txt");
 		BufferedReader lineReader = new BufferedReader(docReader);

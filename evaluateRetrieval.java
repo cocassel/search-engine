@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class Homework3{
+public class evaluateRetrieval{
 
 	public static void main(String[] args) throws IOException {
 	
@@ -51,6 +51,7 @@ public class Homework3{
 				}
 			}
 		}
+		lineReader.close();
 		return qrels;
 	}
 	
@@ -73,6 +74,7 @@ public class Homework3{
 			String[] split = currentLine.split(" ");
 			if(split.length!=6){
 				System.out.println("This results file is formatted incorrectly");
+				lineReader.close();
 				return; //exits method
 			}
 			else{
@@ -101,6 +103,7 @@ public class Homework3{
 					currentTopicResults.add(new resultLine(currentDocno, currentScore)); //adds docno and score pair to arraylist for current topicID
 				}
 				catch(Exception e){
+					lineReader.close();
 					System.out.println("This results file is formatted incorrectly");
 					return;
 				}
@@ -117,7 +120,7 @@ public class Homework3{
 		calculatedScores.put(currentTopicID, new topicResultScores(currentTopicID, ap, p10, ndcg10, ndcg1000, tbg));
 		
 		printScores(calculatedScores, printResultsFilePath); //print out all scores to new file
-		
+		lineReader.close();
 		
 	}
 	
@@ -223,8 +226,6 @@ public class Homework3{
 	
 	public static float getPrecision(int topicID, int rank, ArrayList<resultLine> currentTopicResults, HashMap<Integer, ArrayList<String>> qrels ){
 		float precision=0;
-		
-		ArrayList<String> relevantDocs = qrels.get(topicID);
 		float relevantDocsUpUntilRank=0;
 		
 		for(int i=0; i<rank && i<currentTopicResults.size(); i++){
@@ -344,7 +345,7 @@ public class Homework3{
 	
 	public static HashMap<String, Integer> readInDocnoDoc(String pathToDoc) throws IOException{ //recreates hashmap of 
 		
-		HashMap<String, Integer> docnoToInternalID = new HashMap(); //key is docno and value is internal doc ID
+		HashMap<String, Integer> docnoToInternalID = new HashMap<String, Integer>(); //key is docno and value is internal doc ID
 		
 		FileReader docReader = new FileReader(pathToDoc + "docnoToInternalID.txt");
 		BufferedReader lineReader = new BufferedReader(docReader);

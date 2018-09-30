@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class HW4 {
+public class getQueryResultsStemmed {
 
 	public static void main(String[] args) throws IOException {
 		
@@ -15,7 +15,7 @@ public class HW4 {
 		
 		System.out.println("Please enter the path to the location of the index file");
 		String pathToIndex=scanner.next();
-		pathToIndex="/Users/Celeste/Documents/2018/3A/MSCI541/MSCI541-Homework/LAtimesDocs/";
+		pathToIndex="/Users/Celeste/Documents/2018/3A/MSCI541/MSCI541-Homework/LAtimesStemmed/";
 		//pathToIndex="/Users/Celeste/Documents/2018/3A/MSCI541/MSCI541-Homework/LAtimesSampleDocs/";
 		
 		System.out.println("Please enter the name of the queries file");
@@ -25,14 +25,14 @@ public class HW4 {
 		
 		System.out.println("Please enter your prefered name for the results file");
 		String resultsFileName=scanner.next();
-		resultsFileName="cocassel-hw4-bm25-baseline.txt";
+		resultsFileName="cocassel-hw4-bm25-stem.txt";
 		
 		HashMap<Integer, ArrayList<Integer>> invIndex = readInIndex(pathToIndex); //calls the function to read in the index from text file
 		HashMap<String, Integer> lexicon1 = readInLexicon(pathToIndex);	//call function to read in lexicon
 		HashMap<Integer, metadata> metadata =readInMetadataDoc(pathToIndex); //call function to read in metadata
 		
 		getResults(invIndex, lexicon1, metadata, queriesFileName, resultsFileName); //calls function that performs search for given query file and prints results to a text file
-		
+		scanner.close();
 	
 	}
 	
@@ -111,6 +111,7 @@ public class HW4 {
 					double B= (k2 +1)*frequencyOfQueryTermInQuery/(k2 + frequencyOfQueryTermInQuery); //second multiplicative term in BM25 equation
 					double C= Math.log(( totalDocCount - numberOfDocsWithQueryTerm +0.5)/(numberOfDocsWithQueryTerm +0.5)); //third multiplicative term in BM25 equation
 					
+					
 					double partialScoreForCurrentQuery=A*B*C; //partial score for current query term for given doc
 					
 					if(BM25scores.containsKey(docID)){ //if docID exists in BM25 scores dictionary
@@ -134,7 +135,7 @@ public class HW4 {
 		Collections.sort(resultSet);//sort array by BM25score
 		
 		String Q0="Q0"; //same for all docs
-		String runTag="cocasselBM25"; //same for all docs
+		String runTag="cocasselBM25-stem"; //same for all docs
 		
 		
 		for(int k=0; k<resultSet.size() && k<1000; k++ ){ //for each document in the result set but keeping the top 1000 if more than 1000 results
@@ -175,13 +176,13 @@ public class HW4 {
 			if(!(Character.isDigit(currentChar)) && !(Character.isLetter(currentChar))){ //if character is not a number or letter
 				if(start!=j){
 					String token=query.substring(start, j);
-					queryTokens.add(token.toLowerCase());
+					queryTokens.add(PorterStemmer.stem(token.toLowerCase()));
 				}
 				start=j+1;
 			}
 		}
 		if(start!=j){
-			queryTokens.add(query.substring(start, j).toLowerCase()); //catches last token
+			queryTokens.add(PorterStemmer.stem(query.substring(start, j).toLowerCase())); //catches last token
 		}
 		
 	}

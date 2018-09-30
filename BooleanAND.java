@@ -1,12 +1,7 @@
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.zip.GZIPInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -38,6 +33,7 @@ public class BooleanAND {
 		
 		getResults(invIndex, lexicon1, metadata, queriesFileName, resultsFileName); //calls function that performs search for given query file and prints results to a text file
 		
+		scanner.close();
 	}
 	
 	public static void getResults(HashMap<Integer, ArrayList<Integer>> invIndex, HashMap<String, Integer> lexicon1, HashMap<Integer, metadata> metadata, String queriesFileName, String resultsFileName) throws IOException{

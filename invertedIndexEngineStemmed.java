@@ -45,6 +45,7 @@ public class invertedIndexEngineStemmed {
 		else{
 			gzip(filePath, pathToStoreDocs);
 		}
+		scanner.close();
 	}
 	
 	public static void gzip(String filePath, String pathToStoreDocs) throws FileNotFoundException, IOException{
@@ -168,9 +169,9 @@ public class invertedIndexEngineStemmed {
 			   indexWriter.println(invIndex.get(termId));
 		}	
 		indexWriter.close();
-		
-		
+		reader.close();
 	}
+	
 	public static ArrayList<String> tokenizeDoc(ArrayList<String> docLines){ //function to tokenize a document. returns doc's token list
 		ArrayList<String> docTokens = new ArrayList<String>();
 		int i=0;

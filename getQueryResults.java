@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class HW4stemmed {
+public class getQueryResults {
 
 	public static void main(String[] args) throws IOException {
 		
@@ -15,17 +15,14 @@ public class HW4stemmed {
 		
 		System.out.println("Please enter the path to the location of the index file");
 		String pathToIndex=scanner.next();
-		pathToIndex="/Users/Celeste/Documents/2018/3A/MSCI541/MSCI541-Homework/LAtimesStemmed/";
-		//pathToIndex="/Users/Celeste/Documents/2018/3A/MSCI541/MSCI541-Homework/LAtimesSampleDocs/";
 		
 		System.out.println("Please enter the name of the queries file");
 		String queriesFileName=scanner.next();
 		queriesFileName="queries.txt";
-		//queriesFileName="cocasselQueries.txt";
 		
 		System.out.println("Please enter your prefered name for the results file");
 		String resultsFileName=scanner.next();
-		resultsFileName="cocassel-hw4-bm25-stem.txt";
+		resultsFileName="cocassel-hw4-bm25-baseline.txt";
 		
 		HashMap<Integer, ArrayList<Integer>> invIndex = readInIndex(pathToIndex); //calls the function to read in the index from text file
 		HashMap<String, Integer> lexicon1 = readInLexicon(pathToIndex);	//call function to read in lexicon
@@ -33,8 +30,7 @@ public class HW4stemmed {
 		
 		getResults(invIndex, lexicon1, metadata, queriesFileName, resultsFileName); //calls function that performs search for given query file and prints results to a text file
 		
-		
-		
+		scanner.close();
 	}
 	
 	public static void getResults(HashMap<Integer, ArrayList<Integer>> invIndex, HashMap<String, Integer> lexicon1, HashMap<Integer, metadata> metadata, String queriesFileName, String resultsFileName) throws IOException{
@@ -63,9 +59,6 @@ public class HW4stemmed {
 		lineReader.close(); 
 		resultsWriter.close();
 	}
-	
-	
-	
 	
 	public static void processQuery(double avgDocLength, double totalDocCount, HashMap<Integer, ArrayList<Integer>> invIndex, HashMap<String, Integer> lexicon1, HashMap<Integer, metadata> metadata, String query, int topicID, PrintWriter resultsWriter){
 		
@@ -97,9 +90,7 @@ public class HW4stemmed {
 					}
 					
 				}
-					
-				
-				
+						
 				for(int j=0; j<postings.size(); j+=2){ //for each docID in postings list
 					int docID=postings.get(j); //gets the docID from postings list
 					
@@ -111,7 +102,6 @@ public class HW4stemmed {
 					double A= (k1 +1)*frequencyOfQueryTermInDoc/(K+frequencyOfQueryTermInDoc); //first multiplicative term in BM25 equation
 					double B= (k2 +1)*frequencyOfQueryTermInQuery/(k2 + frequencyOfQueryTermInQuery); //second multiplicative term in BM25 equation
 					double C= Math.log(( totalDocCount - numberOfDocsWithQueryTerm +0.5)/(numberOfDocsWithQueryTerm +0.5)); //third multiplicative term in BM25 equation
-					
 					
 					double partialScoreForCurrentQuery=A*B*C; //partial score for current query term for given doc
 					
@@ -136,7 +126,7 @@ public class HW4stemmed {
 		Collections.sort(resultSet);//sort array by BM25score
 		
 		String Q0="Q0"; //same for all docs
-		String runTag="cocasselBM25-stem"; //same for all docs
+		String runTag="cocasselBM25"; //same for all docs
 		
 		
 		for(int k=0; k<resultSet.size() && k<1000; k++ ){ //for each document in the result set but keeping the top 1000 if more than 1000 results
@@ -177,13 +167,13 @@ public class HW4stemmed {
 			if(!(Character.isDigit(currentChar)) && !(Character.isLetter(currentChar))){ //if character is not a number or letter
 				if(start!=j){
 					String token=query.substring(start, j);
-					queryTokens.add(PorterStemmer.stem(token.toLowerCase()));
+					queryTokens.add(token.toLowerCase());
 				}
 				start=j+1;
 			}
 		}
 		if(start!=j){
-			queryTokens.add(PorterStemmer.stem(query.substring(start, j).toLowerCase())); //catches last token
+			queryTokens.add(query.substring(start, j).toLowerCase()); //catches last token
 		}
 		
 	}

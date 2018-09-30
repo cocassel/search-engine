@@ -1,5 +1,3 @@
-import java.util.Comparator;
-
 public class resultLine implements Comparable<resultLine>{
 	private String docno;
 	private float score;

@@ -1,0 +1,14 @@
+/BM25pair.class
+/BooleanAND.class
+/Homework3.class
+/PorterStemmer.class
+/getQueryResults.class
+/getQueryResultsStemmed.class
+/invertedIndexEngine.class
+/invertedIndexEngineStemmed.class
+/metadata.class
+/readDoc.class
+/resultLine.class
+/searchEngine.class
+/sentenceScore.class
+/topicResultScores.class
